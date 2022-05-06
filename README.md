@@ -1,13 +1,9 @@
 # Albo1125.Common
-Albo1125.Common is a helper plugin for all my other GTA5 and LSPDFR plugins.
+Albo1125.Common is a helper plugin for all his other GTA5 and LSPDFR plugins.
 
-[Download page here](https://www.lcpdfr.com/files/file/10294-albo1125common/)
+[Download page here](#)
 
-[Check out my YouTube channel](https://www.youtube.com/channel/UCSDMQS6b2roa-dZ0vAyaVWg)
-
-[Why I'm open sourcing some of my LSPDFR plugins](https://www.lcpdfr.com/forums/topic/87615-open-sourcing-albo1125s-mods-retirement/)
-
-[All donations are welcome and appreciated](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T9T5RTSWX8PEY)
+Message from Albo...
 
 ## Code & building
 Quite simple, clone the repo, place the below dependencies into a new **Albo1125.Common/dependencies** folder. It should then build without issue.
