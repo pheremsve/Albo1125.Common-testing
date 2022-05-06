@@ -14,6 +14,4 @@ They may make it into a release and, of course, you'll be credited appropriately
 Obviously, feel free to use this as a resource to learn from and improve your programming skills for RPH (credits appreciated, please see licence also if copying/using larger parts of the code).
 
 ## Developer dependencies
-* [LSPD First Response by G17 Media](https://www.lcpdfr.com/files/file/7792-lspd-first-response/)
-* [RAGEPluginHook SDK by MulleDK19](http://ragepluginhook.net/Downloads.aspx)
-* Common Language Runtime Execution Engine 2.4 Library (mscoree). Add reference > COM > Common Language Runtime Execution Engine 2.4 Library (Windows/Microsoft.NET/version/mscoree.tlb)
+
