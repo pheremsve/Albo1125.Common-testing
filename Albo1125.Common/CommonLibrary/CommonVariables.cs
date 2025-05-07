@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Rage;
 
 namespace Albo1125.Common.CommonLibrary
 {
@@ -30,7 +24,19 @@ namespace Albo1125.Common.CommonLibrary
             }
         }
 
-        private static List<Model> _MotorBikesToSelectFrom = new List<Model> { "BATI", "BATI2", "AKUMA", "BAGGER", "DOUBLE", "NEMESIS", "HEXER" };
+        private static List<Model> _MotorBikesToSelectFrom = new List<Model>
+{
+    "BATI", "BATI2", "AKUMA", "BAGGER", "DOUBLE", "NEMESIS", "HEXER",
+    "DIABLO", "VORTEX", "THRUST", "CLIFFHANGER", "GARGOYLE", "CHIMERA", "ESSKEY", "DEFILER",
+    "AVARUS", "BLAZER", "BLAZER2", "BLAZER3", "BLAZER4", "BLAZER5", "CARBONRS", "DAEMON",
+    "DAEMON2", "ENDURO", "FAGGIO", "FAGGIO2", "FAGGIO3", "HAKUCHOU", "HAKUCHOU2", "INNOVATION",
+    "LECTRO", "MANCHEZ", "MANCHEZ2", "NIGHTBLADE", "OPPRESSOR", "OPPRESSOR2", "RATBIKE",
+    "RUFFIAN", "SANCTUS", "SANCHEZ", "SANCHEZ2", "SHOTARO", "SOVEREIGN", "VADER", "VINDICATOR",
+    "WOLFSBANE", "ZOMBIEA", "ZOMBIEB"
+};
+
+    
+
         public static Model[] MotorbikesToSelectFrom
         {
             get
@@ -482,3 +488,4 @@ namespace Albo1125.Common.CommonLibrary
 
     }
 }
+
