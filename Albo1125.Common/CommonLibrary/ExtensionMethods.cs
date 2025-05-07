@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Rage;
-using Rage.Native;
-using System.Drawing;
-using System.Windows.Forms;
-using Albo1125.Common.CommonLibrary;
-using System.Globalization;
-using System.IO;
+
 
 namespace Albo1125.Common.CommonLibrary
 {
@@ -115,11 +105,20 @@ namespace Albo1125.Common.CommonLibrary
             double actualWidth = 0;
             actualHeight = 0;
             foreach (var item in originalLines)
+
+
+            // updated by pherem may need to be changed for testing Current 1.0 / 96 DPI
             {
-                System.Windows.Media.FormattedText formatted = new System.Windows.Media.FormattedText(item,
-                    CultureInfo.CurrentCulture,
-                    System.Windows.FlowDirection.LeftToRight,
-                    new System.Windows.Media.Typeface(fontFamily), emSize, System.Windows.Media.Brushes.Black);
+                System.Windows.Media.FormattedText formatted = new System.Windows.Media.FormattedText(
+      item,
+      CultureInfo.CurrentCulture,
+      System.Windows.FlowDirection.LeftToRight,
+      new System.Windows.Media.Typeface(fontFamily),
+      emSize,
+      System.Windows.Media.Brushes.Black,
+      1.0 // PixelsPerDip
+  );
+
 
 
                 actualWidth += formatted.Width;
@@ -295,45 +294,72 @@ namespace Albo1125.Common.CommonLibrary
             
         }
 
+        //Key Enhancements: Added by pherem on 5/3/2025
+        // MakeMissionPed() is now reused inside ClonePed().
+        //Added null checks for safety. 
+        //Improved variable naming and structure.
+        //Added summaries for IDE tooltips and clarity.
+
+        /// <summary>
+        /// Marks the ped as mission-critical: blocks ambient behavior and makes it persistent.
+        /// </summary>
         public static void MakeMissionPed(this Ped ped)
         {
+            if (ped == null || !ped.Exists()) return;
+
             ped.BlockPermanentEvents = true;
             ped.IsPersistent = true;
-
         }
+
+        /// <summary>
+        /// Clones a ped, preserving position, heading, health, armor, and vehicle state. Deletes the original.
+        /// </summary>
         public static Ped ClonePed(this Ped oldPed)
         {
-            Vector3 oldPedPosition = oldPed.Position;
-            float oldPedHeading = oldPed.Heading;
+            if (oldPed == null || !oldPed.Exists()) return null;
+
+            // Backup data
+            Vector3 oldPosition = oldPed.Position;
+            float oldHeading = oldPed.Heading;
+            int oldArmor = oldPed.Armor;
+            int oldHealth = oldPed.Health;
+
+            // Check if ped is in a vehicle
+            Vehicle vehicle = null;
+            int seatIndex = -1;
             bool spawnInVehicle = false;
-            Vehicle car = null;
-            int seatindex = 0;
-            int oldarmor = oldPed.Armor;
-            int oldhealth = oldPed.Health;
+
             if (oldPed.IsInAnyVehicle(false))
             {
-                car = oldPed.CurrentVehicle;
-                seatindex = oldPed.SeatIndex;
+                vehicle = oldPed.CurrentVehicle;
+                seatIndex = oldPed.SeatIndex;
                 spawnInVehicle = true;
             }
-            Ped newPed = NativeFunction.Natives.ClonePed<Ped>(oldPed, oldPed.Heading, false, true);
-            if (oldPed.Exists() && oldPed.IsValid())
-            {
-                oldPed.Delete();
-            }
-            newPed.Position = oldPedPosition;
-            newPed.Heading = oldPedHeading;
 
-            if (spawnInVehicle)
+            // Clone the ped
+            Ped newPed = NativeFunction.Natives.ClonePed<Ped>(oldPed, oldHeading, false, true);
+
+            // Delete old ped
+            if (oldPed.Exists()) oldPed.Delete();
+
+            // Restore key values
+            newPed.Position = oldPosition;
+            newPed.Heading = oldHeading;
+            newPed.Health = oldHealth;
+            newPed.Armor = oldArmor;
+
+            // Reassign to vehicle if needed
+            if (spawnInVehicle && vehicle.Exists())
             {
-                newPed.WarpIntoVehicle(car, seatindex);
+                newPed.WarpIntoVehicle(vehicle, seatIndex);
             }
-            newPed.Health = oldhealth;
-            newPed.Armor = oldarmor;
-            newPed.BlockPermanentEvents = true;
-            newPed.IsPersistent = true;
+
+            // Mark as mission ped
+            newPed.MakeMissionPed();
+
             return newPed;
         }
+
 
         /// <summary>
         /// Toggles the neon light in a vehicle
@@ -378,25 +404,35 @@ namespace Albo1125.Common.CommonLibrary
 
 
         /// <summary>
-        /// Returns the neon light color
+        /// Gets the neon light color from the specified vehicle.
         /// </summary>
-        /// <param name="vehicle"></param>
-        /// <returns>the neon light color</returns>
+        /// <param name="vehicle">The vehicle to query.</param>
+        /// <returns>The neon light color as a <see cref="System.Drawing.Color"/>.</returns>
         public static System.Drawing.Color GetNeonLightsColor(this Vehicle vehicle)
         {
+            if (vehicle == null || !vehicle.Exists())
+                return System.Drawing.Color.Black; // Default fallback
+
             return UnsafeGetNeonLightsColor(vehicle);
         }
+
+        /// <summary> // updated by pherem on 5/3/2025
+        /// Unsafe call to retrieve the RGB values of the neon lights.
+        /// </summary>
+        /// <param name="vehicle">The vehicle to query.</param>
+        /// <returns>A System.Drawing.Color based on neon RGB.</returns>
         private static unsafe System.Drawing.Color UnsafeGetNeonLightsColor(Vehicle vehicle)
         {
-            Color color;
-            int red;
-            int green;
-            int blue;
-            ulong GetVehicleNeonLightsColourHash = 0x7619eee8c886757f;
+            int red = 0, green = 0, blue = 0;
+
+            // Hash for GET_VEHICLE_NEON_LIGHTS_COLOUR
+            const ulong GetVehicleNeonLightsColourHash = 0x7619EEE8C886757F;
+
             NativeFunction.CallByHash<uint>(GetVehicleNeonLightsColourHash, vehicle, &red, &green, &blue);
 
-            return color = Color.FromArgb(red, green, blue);
+            return System.Drawing.Color.FromArgb(red, green, blue);
         }
+
 
 
 
@@ -426,8 +462,6 @@ namespace Albo1125.Common.CommonLibrary
             return colors;
         }
 
-
-
         /// <summary>
         /// Sets the color to this Rage.Vehicle instance
         /// </summary>
@@ -448,26 +482,7 @@ namespace Albo1125.Common.CommonLibrary
             NativeFunction.Natives.SET_VEHICLE_COLOURS(v, (int)color.PrimaryColor, (int)color.SecondaryColor);
         }
 
-        /// <summary>
-        /// Randomise the license plate to avoid excessively frequent debug plates from showing.
-        /// </summary>
-        public static void RandomiseLicencePlate(this Vehicle vehicle)
-        {
-            if (vehicle)
-            {
-                vehicle.LicensePlate = MathHelper.GetRandomInteger(9).ToString() +
-                                       MathHelper.GetRandomInteger(9).ToString() +
-                                       Convert.ToChar(MathHelper.GetRandomInteger(0, 25) + 65) +
-                                       Convert.ToChar(MathHelper.GetRandomInteger(0, 25) + 65) +
-                                       Convert.ToChar(MathHelper.GetRandomInteger(0, 25) + 65) +
-                                       MathHelper.GetRandomInteger(9).ToString() +
-                                       MathHelper.GetRandomInteger(9).ToString() +
-                                       MathHelper.GetRandomInteger(9).ToString();
-#if DEBUG
-                Game.LogTrivial($"Set {vehicle.Model.Name} license plate to {vehicle.LicensePlate}");
-#endif
-            }
-        }
+      
 
         /// Cache the result of whether a vehicle is an ELS vehicle.
         /// </summary>
@@ -524,14 +539,30 @@ namespace Albo1125.Common.CommonLibrary
 
     }
 
-
+    // UPDATED: 5/3/2025 by pherem
     public enum ENeonLights
     {
-        Front = 2,
-        Back = 3,
+        // Individual zones
         Left = 0,
         Right = 1,
+        Front = 2,
+        Back = 3,
+
+        // Combined zones (custom logic)
+        AllSides = 4,          // All zones: Left + Right + Front + Back
+        SidesOnly = 5,         // Left + Right
+        FrontBackOnly = 6,     // Front + Back
+        LeftFrontOnly = 7,     // Left + Front
+        RightBackOnly = 8,     // Right + Back
+
+        // Animation/Effect Presets (requires custom logic support)
+        PulseCycle = 10,       // Cycle through zones with pulse effect
+        PoliceStrobe = 11,     // Emergency strobe effect
+        RandomFlash = 12,      // Random zone flashing
+        DirectionalLeft = 13,  // Sweep animation from left to right
+        DirectionalRight = 14, // Sweep animation from right to left
     }
+
 
     public enum EPaint
     {
@@ -621,6 +652,53 @@ namespace Albo1125.Common.CommonLibrary
         Pure_White = 134,
         Default_Alloy = 156,
         Champagne = 93,
+
+        /* CANDY */
+        Candy_Blue = 168,
+        Candy_Apple_Red = 169,
+        Candy_Emerald_Green = 170,
+        Candy_Violet = 171,
+        Candy_Copper = 172,
+        Candy_Sapphire = 173,
+
+
+        /* PEARLESCENT */
+        Pearlescent_Purple_Blue = 161,
+        Pearlescent_Orange_Yellow = 162,
+        Pearlescent_Black_Green = 163,
+        Pearlescent_White_Gold = 164,
+        Pearlescent_Pink_Purple = 165,
+        Pearlescent_Blue_Silver = 166,
+        Pearlescent_Red_Black = 167,
+
+
+        /* LEO */
+        LSPD_Blue = 174,
+        Sheriff_Tan = 175,
+        SAHP_Blue = 176,
+        EMS_White = 177,
+        FireDept_Red = 178,
+        NOOSE_Grey = 179,
+        ParkRanger_Green = 180,
+
+        /* MILITARY  */
+        Camo_Tan = 181,
+        Camo_Green = 182,
+        Desert_Sand = 183,
+        Urban_Grey = 184,
+        Forest_Green = 185,
+        Navy_Blue_Camo = 186,
+
+        /* SEMI-GLOSS */
+
+        Satin_Black = 187,
+        Satin_White = 188,
+        Satin_Grey = 189,
+        Satin_Red = 190,
+        Satin_Blue = 191,
+        Satin_Green = 192,
+        Satin_Bronze = 193,
+
 
         /* MATTE */
         Matte_Black = 12,
@@ -752,4 +830,6 @@ public struct VehicleColor
         return name.Replace("_", " ");
     }
 }
+
+
 
