@@ -1,4 +1,4 @@
-﻿using Rage;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -332,3 +332,4 @@ namespace Albo1125.Common.CommonLibrary
         }
     }
 }
+

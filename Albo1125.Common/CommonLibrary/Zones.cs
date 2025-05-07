@@ -1,10 +1,4 @@
-﻿using Rage;
-using Rage.Native;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Albo1125.Common.CommonLibrary
 {
@@ -106,7 +100,7 @@ namespace Albo1125.Common.CommonLibrary
         }
 
 
-
+       
         public static string GetLowerZoneNameForEntity(this Entity entity)
         {
             return GetZoneName(GetZone(entity.Position)).ToLower();
@@ -351,3 +345,4 @@ namespace Albo1125.Common.CommonLibrary
 
     }
 }
+
