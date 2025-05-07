@@ -1,0 +1,15 @@
+# Ignore common DLLs
+*.dll
+
+# But allow your own plugin DLLs (if needed)
+!YourPlugin.dll
+
+# Ignore these RagePluginHook DLLs (exact names)
+RagePluginHook.dll
+RagePluginHook.xml
+RageNativeUI.dll
+LSPD_First_Response.dll
+
+# Ignore bin/obj folders
+bin/
+obj/
