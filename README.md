@@ -1,4 +1,4 @@
-# Albo1125.Common - This is in works for testing please use Sparkys edition
+# Albo1125.Common - This is in testing please use Sparkys edition Link up in top right
 
 ---
 
@@ -14,9 +14,9 @@ with modern RagePluginHook and LSPDFR versions in 2025 and beyond.
 
 ---
 
-## 🛡️ Usage
+## 🛡️ Usage 
 
-- This DLL is a required dependency for plugins such as:
+- Use one by  Sparkys if you plan to use the following
   - LSPDFR+
   - Traffic Policer
   - Arrest Manager
@@ -32,7 +32,7 @@ alongside your other plugins.
 ## 📜 Credits
 
 - Original Development: **Albo1125**
-- 2025 Update and Maintenance: **Sparky**
+- 2025 Update and Maintenance: **Sparky** 
 
 ---
 
