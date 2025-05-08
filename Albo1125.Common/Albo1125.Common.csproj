@@ -28,7 +28,7 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <LangVersion>12.0</LangVersion>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -108,7 +108,7 @@
       <HintPath>..\..\DLLs\RAGENativeUI.dll</HintPath>
     </Reference>
     <Reference Include="RagePluginHook, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\RagePluginHook.1.109.1\lib\net472\RagePluginHook.dll</HintPath>
+      <HintPath>..\..\DLLs\RagePluginHook.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -122,6 +122,9 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.AccessControl, Version=6.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.AccessControl.6.0.1\lib\net461\System.Security.AccessControl.dll</HintPath>

@@ -143,7 +143,7 @@ namespace Albo1125.Common
 
                             NewVersion = new Version(s);
                         }
-                        catch (Exception e) { LSPDFRUpdateAPIRunning = false; Game.LogTrivial("LSPDFR Update API down. Aborting checks."); }
+                        catch (Exception) { LSPDFRUpdateAPIRunning = false; Game.LogTrivial("LSPDFR Update API down. Aborting checks."); }
                     }
                 });
                 FetchVersionThread.Start();
@@ -162,11 +162,11 @@ namespace Albo1125.Common
                 }
 
             }
-            catch (System.Threading.ThreadAbortException e)
+            catch (System.Threading.ThreadAbortException )
             {
 
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 Game.LogTrivial("Error while checking " + ModificationName + " for updates.");
             }
